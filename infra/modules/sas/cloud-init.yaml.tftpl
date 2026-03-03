@@ -1,0 +1,42 @@
+#cloud-config
+# Doge Nostalgia Engine — SAS bootstrap
+# Much cloud-init. Very automation. Such Docker. Wow. 🐕
+
+package_update: true
+package_upgrade: false
+
+packages:
+  - docker.io
+  - docker-compose-plugin
+  - git
+  - curl
+  - ca-certificates
+
+runcmd:
+  # ── Docker setup ────────────────────────────────────────────────────────
+  - systemctl enable docker
+  - systemctl start docker
+
+  # ── Clone application ────────────────────────────────────────────────────
+  - git clone ${git_repo_url} /opt/nostalgia-engine
+
+  # ── Write .env (secrets injected by OpenTofu templatefile) ──────────────
+  - |
+    cat > /opt/nostalgia-engine/.env << 'ENVEOF'
+    DASHSCOPE_API_KEY=${dashscope_api_key}
+    OSS_ACCESS_KEY_ID=${oss_access_key_id}
+    OSS_ACCESS_KEY_SECRET=${oss_access_key_secret}
+    OSS_BUCKET_NAME=${oss_bucket_name}
+    OSS_ENDPOINT=${oss_endpoint}
+    OSS_SIGNED_URL_EXPIRY=3600
+    ENVEOF
+
+  # ── Start application ────────────────────────────────────────────────────
+  - cd /opt/nostalgia-engine && docker compose up -d --build
+
+final_message: |
+  🐕 Doge Nostalgia Engine is live!
+  Such deploy. Very cloud. Many docker. Wow.
+  App:  http://$PUBLIC_IPV4
+  API:  http://$PUBLIC_IPV4:8000
+  Docs: http://$PUBLIC_IPV4:8000/docs

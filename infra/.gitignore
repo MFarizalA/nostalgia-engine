@@ -1,0 +1,26 @@
+# Secrets — never commit these
+terraform.tfvars
+*.tfvars
+!terraform.tfvars.example
+
+# State files — contain resource IDs and may include secrets
+*.tfstate
+*.tfstate.*
+*.tfstate.backup
+
+# Local working directory
+.terraform/
+.terraform.lock.hcl
+
+# Crash logs
+crash.log
+crash.*.log
+
+# Override files (local dev only)
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Plan output (may contain sensitive values)
+*.tfplan

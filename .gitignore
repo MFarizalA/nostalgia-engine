@@ -1,0 +1,36 @@
+# ── Secrets — never commit these ─────────────────────────────────────────────
+.env
+.env.*
+!.env.example
+
+# ── Python ───────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+*.egg-info/
+dist/
+build/
+
+# ── Node / Frontend ───────────────────────────────────────────────────────────
+node_modules/
+frontend/dist/
+frontend/.vite/
+
+# ── OpenTofu / Terraform ──────────────────────────────────────────────────────
+infra/terraform.tfvars
+infra/*.tfvars
+!infra/terraform.tfvars.example
+infra/*.tfstate
+infra/*.tfstate.*
+infra/.terraform/
+infra/.terraform.lock.hcl
+infra/crash.log
+
+# ── OS / Editor ───────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
