@@ -39,7 +39,7 @@ def _get_client() -> AsyncOpenAI:
     if _client is None:
         _client = AsyncOpenAI(
             api_key=settings.dashscope_api_key,
-            base_url="https://dashscope.aliyuncs.com/compatible-mode/v1",
+            base_url="https://dashscope-intl.aliyuncs.com/compatible-mode/v1",
         )
     return _client
 

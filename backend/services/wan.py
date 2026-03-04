@@ -13,10 +13,10 @@ from config import settings
 logger = logging.getLogger(__name__)
 
 _VIDEO_SYNTHESIS_URL = (
-    "https://dashscope.aliyuncs.com/api/v1/services/aigc"
+    "https://dashscope-intl.aliyuncs.com/api/v1/services/aigc"
     "/video-generation/video-synthesis"
 )
-_TASK_STATUS_URL = "https://dashscope.aliyuncs.com/api/v1/tasks/{task_id}"
+_TASK_STATUS_URL = "https://dashscope-intl.aliyuncs.com/api/v1/tasks/{task_id}"
 
 # Wan task status values returned by the API
 _TERMINAL_SUCCESS = {"SUCCEEDED"}
