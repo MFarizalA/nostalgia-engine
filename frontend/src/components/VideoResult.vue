@@ -6,6 +6,42 @@ const props = defineProps({
   vibeScore: { type: Number, required: true },
 })
 
+const FILTER_TAGS = ['A4 · HB2', 'C1 · S2', 'HB1 · X1', 'A6 · M5', 'F2 · G3']
+const filterTag = FILTER_TAGS[Math.floor(Math.random() * FILTER_TAGS.length)]
+
+const WORD_POOL = [
+  'wow', 'such vibe', 'very 2016', 'much aesthetic', 'many filter',
+  '#nofilter', '#vscocam', '#blessed', '#throwback', '#aesthetic',
+  'so deep', 'very artsy', 'lol jk', 'rekt', 'on fleek',
+  '#tbt', '#ootd', 'slay', 'yolo', 'fam',
+]
+
+const COLORS = ['#c8832a', '#7a5232', '#d4a55a', '#5c3010', '#8b4e18', '#c07830']
+const POSITIONS = [
+  { top: '8%',  left: '4%',  transform: 'rotate(-11deg)' },
+  { top: '6%',  right: '5%', transform: 'rotate(8deg)'   },
+  { top: '42%', left: '2%',  transform: 'rotate(-7deg)'  },
+  { top: '38%', right: '3%', transform: 'rotate(12deg)'  },
+  { bottom: '12%', left: '6%',  transform: 'rotate(-5deg)' },
+  { bottom: '10%', right: '6%', transform: 'rotate(9deg)'  },
+]
+
+function pickRandom(arr) { return arr[Math.floor(Math.random() * arr.length)] }
+
+// Pick 4 random words from different positions each render
+const floatingWords = POSITIONS.slice(0, 4).map((pos, i) => {
+  const words = WORD_POOL.slice()
+  words.sort(() => Math.random() - 0.5)
+  return {
+    text: words[i % words.length],
+    style: {
+      ...pos,
+      color: pickRandom(COLORS),
+      fontSize: `${0.75 + Math.random() * 0.35}rem`,
+    },
+  }
+})
+
 const displayScore = ref(0)
 const videoRef = ref(null)
 
@@ -44,7 +80,15 @@ function vibeTier(score) {
     <!-- ── Video player ── -->
     <div class="player-frame">
       <!-- Filter label overlay -->
-      <div class="player-frame__tag">A4 · HB2</div>
+      <div class="player-frame__tag">{{ filterTag }}</div>
+
+      <!-- Floating 2016 meme overlays -->
+      <span
+        v-for="(word, i) in floatingWords"
+        :key="i"
+        class="float-word"
+        :style="word.style"
+      >{{ word.text }}</span>
 
       <video
         ref="videoRef"
@@ -124,6 +168,24 @@ function vibeTier(score) {
   display: block;
   /* Warm nostalgic filter */
   filter: saturate(1.12) contrast(1.06) sepia(0.1) brightness(1.03);
+}
+
+.float-word {
+  position: absolute;
+  z-index: 3;
+  font-family: 'Comic Sans MS', 'Comic Sans', cursive, sans-serif;
+  font-weight: 700;
+  pointer-events: none;
+  text-shadow: 1px 1px 0 rgba(0,0,0,0.4);
+  animation: float-drift 4s ease-in-out infinite;
+}
+.float-word:nth-child(2) { animation-delay: 0.6s; }
+.float-word:nth-child(3) { animation-delay: 1.2s; }
+.float-word:nth-child(4) { animation-delay: 1.8s; }
+
+@keyframes float-drift {
+  0%, 100% { transform: translateY(0) var(--rot, rotate(0deg)); }
+  50%       { transform: translateY(-5px) var(--rot, rotate(0deg)); }
 }
 
 .player-frame__tag {
