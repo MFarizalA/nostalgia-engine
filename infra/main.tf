@@ -27,8 +27,10 @@ provider "alicloud" {
 module "oss" {
   source = "./modules/oss"
 
+  providers = { alicloud = alicloud }
+
   bucket_name     = var.oss_bucket_name
-  allowed_origins = ["*"]   # Tighten to SAS public IP after first apply
+  allowed_origins = ["*"] 
 }
 
 # ── Simple Application Server ────────────────────────────────────────────────
@@ -36,20 +38,11 @@ module "oss" {
 module "sas" {
   source = "./modules/sas"
 
+  providers  = { alicloud = alicloud }
   depends_on = [module.oss]
 
   instance_name = var.sas_instance_name
   plan_id       = var.sas_plan_id
   image_id      = var.sas_image_id
   period        = var.sas_period
-  key_pair_name = var.key_pair_name
-
-  # Secrets injected into cloud-init → .env on the server
-  dashscope_api_key     = var.dashscope_api_key
-  oss_access_key_id     = var.access_key
-  oss_access_key_secret = var.secret_key
-  oss_bucket_name       = module.oss.bucket_name
-  oss_endpoint          = module.oss.endpoint
-
-  git_repo_url = var.git_repo_url
 }

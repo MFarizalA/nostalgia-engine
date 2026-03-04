@@ -93,3 +93,8 @@ variable "git_repo_url" {
   type        = string
   default     = "https://github.com/your-org/nostalgia-engine.git"
 }
+
+variable "ssh_private_key_path" {
+  description = "Local path to the .pem key file for SSH bootstrap (e.g. ~/doge-nostalgia-engine-key.pem)."
+  type        = string
+}

@@ -4,6 +4,6 @@ output "instance_id" {
 }
 
 output "public_ip" {
-  description = "Public IPv4 address of the SAS instance."
-  value       = alicloud_simple_application_server_instance.this.public_ip_address
+  description = "Public IP of the SAS instance."
+  value       = try(data.alicloud_simple_application_server_instances.this.instances[0].public_ip_address, "Check Alibaba Cloud console for public IP")
 }
