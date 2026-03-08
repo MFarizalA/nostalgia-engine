@@ -7,7 +7,7 @@ class Settings(BaseSettings):
 
     # Model names (configurable so they can be updated without code changes)
     qwen_model: str = "qwen3.5-35b-a3b"
-    wan_model:  str = "wan2.6-i2v-flash"
+    wan_model:  str = "wan2.6-i2v"
 
     # OSS
     oss_access_key_id:     str
