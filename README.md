@@ -1,9 +1,11 @@
-# 🐕 Such Nostalgia. Very 2016. Wow.
+# 🐕 Such Nostalgia. Very AI. Wow.
 ### *A Doge-Approved Time Machine — Powered by Alibaba Cloud AI*
 
-> *Much upload. Very 2016. Such video. Wow.*
+> *Much upload. Very rewind. Such video. Wow.*
 
-An AI-powered creative web app that transforms your modern photos into short videos styled in the aesthetic of 2016 — VSCO filters, early Instagram vibes, and peak Doge-era energy. Powered by **Qwen3.5-Vision** and **Wan2.6-i2v-Flash** on Alibaba Cloud, hosted on a Simple Application Server (SAS).
+An AI-powered creative web app that transforms your modern photos into short nostalgic videos styled in the aesthetic of any internet era from 2010 to 2020. Pick a year, choose a festive greeting card theme, dial in an aesthetic mode — and let Qwen3.5 + Wan2.6-i2v-Flash do the rest.
+
+Powered by **Qwen3.5** and **Wan2.6-i2v-Flash** on Alibaba Cloud Model Studio, hosted on a Simple Application Server (SAS).
 
 Built for the **Alibaba Cloud AI × Creativity Hackathon 2026**.
 
@@ -11,10 +13,11 @@ Built for the **Alibaba Cloud AI × Creativity Hackathon 2026**.
 
 ## 🐕 What It Does
 
-1. **Such Upload** — drop a photo from your life in 2026
-2. **Very Analyze** — Qwen3.5-Vision reads it and writes a 2016-era Doge-approved scene description
-3. **Much Generate** — Wan2.6-i2v-Flash animates your photo in the style of a decade ago
-4. **Wow** — you receive a short `.mp4` video + a **"2016 Vibe Score"** (0–100)
+1. **Such Upload** — drop any photo from your life in 2026
+2. **Very Pick** — choose your era (2010–2020), festive theme (CNY / Ramadan / Eid), and aesthetic style (VSCO / Grunge / Meme / Cinemagraph)
+3. **Much Analyze** — Qwen3.5 reads the photo and writes an era-appropriate scene description, vibe score, and Wan video direction prompt
+4. **Wow Generate** — Wan2.6-i2v-Flash animates your photo with the chosen aesthetic
+5. **Such Result** — you receive a short `.mp4` + a **Vibe Score** (0–100) + the AI's full style prompt
 
 ---
 
@@ -26,45 +29,82 @@ Built for the **Alibaba Cloud AI × Creativity Hackathon 2026**.
 
 ---
 
+## ✨ Feature Highlights
+
+### 📅 Era Selector
+Choose which internet year to rewind to:
+
+| Era | Cultural Context |
+|---|---|
+| 2010 | Hipstamatic filters, early Instagram, flip-phone selfies, early Tumblr |
+| 2012 | Earlybird/Hefe/X-Pro II, YOLO, Gangnam Style, Vine launch |
+| 2014 | #nofilter, selfie sticks, Ice Bucket Challenge, early VSCO |
+| **2016** ★ | VSCO cams, Doge meme, Harambe, Pokemon Go, dabbing *(default)* |
+| 2018 | Avocado toast, VSCO girl, Drake memes, Instagram Stories |
+| 2020 | Lo-fi aesthetic, quarantine lighting, TikTok grain, cottagecore |
+
+### 🎊 Festivity Selector (Greeting Card Mode)
+Overlay a festive theme on top of the era aesthetic:
+
+| Theme | Vibe |
+|---|---|
+| ✨ No theme | Pure internet nostalgia |
+| 🧧 Lunar New Year | Hongbao textures, firecracker bokeh, crimson-gold palette |
+| 🌙 Ramadan | Fanous lanterns, crescent moon overlays, amber-gold light |
+| 🎊 Eid | Arabesque patterns, fireworks bokeh, joyful golden glow |
+
+### 🎞️ Style Picker
+Control the aesthetic mode that shapes the video generation:
+
+| Style | Description |
+|---|---|
+| Auto | Let Qwen3.5 decide based on the photo |
+| VSCO | Warm fade, film grain, golden-hour light, #vscocam |
+| Grunge | Low contrast, desaturated, dark moody texture |
+| Meme-Heavy | Comic Sans overlays, reaction faces, maximum chaos |
+| Cinemagraph | Film grain, anamorphic flare, letterbox feel |
+
+### 🤖 AI Transparency
+The result page shows:
+- **Qwen's 2016 Reframe** — the scene description the AI wrote
+- **Wan's Direction** — the exact video generation prompt Qwen produced
+
+---
+
 ## 🗂️ Project Structure
 
 ```
 nostalgia-engine/
-├── frontend/                  # Vue.js / React single-page app
+├── frontend/                  # Vue.js 3 single-page app
 │   ├── src/
-│   │   ├── components/        # Upload, StatusPoller, VideoResult
+│   │   ├── components/        # UploadZone, StatusPoller, VideoResult
 │   │   ├── views/             # Landing, Processing, Result
-│   │   └── App.vue / App.jsx
+│   │   └── App.vue
 │   └── Dockerfile
 │
 ├── backend/                   # Python 3.11 + FastAPI
 │   ├── main.py                # API routes
+│   ├── models.py              # Pydantic request/response models
+│   ├── job_store.py           # In-memory job store
 │   ├── services/
-│   │   ├── qwen.py            # Qwen3.5-Vision integration
+│   │   ├── qwen.py            # Qwen3.5 dynamic prompt builder
 │   │   ├── wan.py             # Wan2.6-i2v-Flash async job handling
 │   │   └── oss.py             # OSS upload + signed URL generation
 │   ├── requirements.txt
 │   └── Dockerfile
 │
 ├── infra/                     # OpenTofu infrastructure-as-code
-│   ├── main.tf                # Root config — wires modules together
-│   ├── variables.tf           # All input variable declarations
-│   ├── outputs.tf             # Exposes SAS IP, OSS domain, app URLs
+│   ├── main.tf
+│   ├── variables.tf
+│   ├── outputs.tf
 │   ├── terraform.tfvars.example
-│   ├── .gitignore             # Excludes *.tfvars and state files
 │   └── modules/
 │       ├── sas/               # Simple Application Server instance + firewall
-│       │   ├── main.tf        # Instance resource + cloud-init bootstrap
-│       │   ├── variables.tf
-│       │   └── outputs.tf
 │       └── oss/               # Object Storage bucket + CORS + lifecycle
-│           ├── main.tf
-│           ├── variables.tf
-│           └── outputs.tf
 │
-├── docs/                      # Project documentation
-│   ├── ARCHITECTURE.md        # Full architecture, sequence diagrams, component breakdown
-│   └── screenshot.png         # App screenshot for README
+├── docs/
+│   ├── ARCHITECTURE.md
+│   └── screenshot.png
 │
 ├── docker-compose.yml
 ├── .env.example
@@ -76,12 +116,12 @@ nostalgia-engine/
 ## 🧠 Architecture
 
 ```
-User → Vue/React (SAS)
+User → Vue.js (SAS)
      → FastAPI Backend (SAS)
-     → Qwen3.5-Vision        — analyzes photo, writes 2016-era prompt
-     → Wan2.6-i2v-Flash      — generates nostalgic video (async, polled every 3–5s)
-     → OSS                   — stores .mp4, returns signed URL
-     → User sees video + Vibe Score
+     → Qwen3.5            — analyzes photo + era/festivity/style → scene_description, style_prompt, vibe_score
+     → Wan2.6-i2v-Flash   — generates nostalgic video (async, polled every 4s)
+     → OSS                — stores .mp4, returns signed URL
+     → User sees video + Vibe Score + AI prompt
 ```
 
 See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) for the full sequence diagram and component breakdown.
@@ -95,7 +135,7 @@ See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) for the full sequence diagram
 - [Docker](https://docs.docker.com/get-docker/) + Docker Compose
 - Alibaba Cloud account with:
   - **Simple Application Server (SAS)** instance (Ubuntu 22.04, 2 vCPU / 4 GB RAM recommended)
-  - **Model Studio** API key (access to `qwen3.5-plus` and `wan2.6-i2v-flash`)
+  - **Model Studio** API key (access to `qwen-vl-max` and `wan2.6-i2v-flash`)
   - **OSS** bucket created
 
 ---
@@ -119,16 +159,16 @@ Edit `.env`:
 # Alibaba Cloud Model Studio
 DASHSCOPE_API_KEY=sk-xxxxxxxxxxxxxxxxxxxxxxxx
 
+# Models
+QWEN_MODEL=qwen-vl-max
+WAN_MODEL=wan2.6-i2v-flash
+
 # OSS
 OSS_ACCESS_KEY_ID=your_access_key_id
 OSS_ACCESS_KEY_SECRET=your_access_key_secret
 OSS_BUCKET_NAME=nostalgia-engine-outputs
 OSS_ENDPOINT=oss-cn-hangzhou.aliyuncs.com
 OSS_SIGNED_URL_EXPIRY=3600
-
-# App
-POLL_INTERVAL_SECONDS=4
-MAX_POLL_ATTEMPTS=60
 ```
 
 ### 3. Build and run
@@ -154,14 +194,28 @@ Submit a photo for transformation.
 ```bash
 curl -X POST http://localhost:8000/api/generate \
   -H "Content-Type: application/json" \
-  -d '{"image_base64": "<base64>", "filename": "photo.jpg"}'
+  -d '{
+    "image_base64": "<base64>",
+    "filename": "photo.jpg",
+    "era": 2016,
+    "festivity": "eid",
+    "style": "vsco"
+  }'
 ```
+
+| Field | Type | Required | Values |
+|---|---|---|---|
+| `image_base64` | string | ✅ | Base64-encoded JPEG/PNG/WebP |
+| `filename` | string | ✅ | Original filename |
+| `era` | integer | — | `2010` `2012` `2014` `2016` `2018` `2020` (default: `2016`) |
+| `festivity` | string | — | `"cny"` `"ramadan"` `"eid"` (default: `null`) |
+| `style` | string | — | `"vsco"` `"grunge"` `"meme"` `"cine"` (default: `null`) |
 
 **Response `202 Accepted`:**
 ```json
 {
-  "job_id": "wanx-job-abc123",
-  "status": "pending",
+  "job_id": "abc123",
+  "status": "processing",
   "vibe_score": 78,
   "scene_description": "A casual outdoor moment remixed into 2016 VSCO aesthetic..."
 }
@@ -174,16 +228,18 @@ curl -X POST http://localhost:8000/api/generate \
 Poll for job completion.
 
 ```bash
-curl http://localhost:8000/api/status/wanx-job-abc123
+curl http://localhost:8000/api/status/abc123
 ```
 
 **Response on success:**
 ```json
 {
-  "job_id": "wanx-job-abc123",
+  "job_id": "abc123",
   "status": "success",
-  "video_url": "https://your-bucket.oss-cn-hangzhou.aliyuncs.com/wanx-job-abc123.mp4?Expires=...",
-  "vibe_score": 78
+  "video_url": "https://your-bucket.oss-cn-hangzhou.aliyuncs.com/video/abc123.mp4?Expires=...",
+  "vibe_score": 78,
+  "scene_description": "A casual outdoor moment...",
+  "style_prompt": "Slow warm zoom with golden bokeh drift, VSCO A4 fade..."
 }
 ```
 
@@ -193,9 +249,9 @@ curl http://localhost:8000/api/status/wanx-job-abc123
 
 | Layer | Technology |
 |---|---|
-| Frontend | Vue.js 3 / React 18 |
+| Frontend | Vue.js 3 |
 | Backend | Python 3.11 + FastAPI |
-| Vision AI | Qwen3.5-Vision (Alibaba Cloud Model Studio) |
+| Vision + Prompt AI | Qwen3.5 (Alibaba Cloud Model Studio) |
 | Video Generation | Wan2.6-i2v-Flash (Alibaba Cloud Model Studio) |
 | Storage | Alibaba Cloud OSS |
 | Hosting | Alibaba Cloud SAS (Docker) |
@@ -209,11 +265,11 @@ curl http://localhost:8000/api/status/wanx-job-abc123
 | Variable | Description | Default |
 |---|---|---|
 | `DASHSCOPE_API_KEY` | Model Studio API key | — |
+| `QWEN_MODEL` | Qwen model ID | `qwen-vl-max` |
+| `WAN_MODEL` | Wan model ID | `wan2.6-i2v-flash` |
 | `OSS_BUCKET_NAME` | OSS bucket for video output | — |
 | `OSS_ENDPOINT` | OSS regional endpoint | `oss-cn-hangzhou.aliyuncs.com` |
 | `OSS_SIGNED_URL_EXPIRY` | Signed URL validity in seconds | `3600` |
-| `POLL_INTERVAL_SECONDS` | Wan job polling frequency | `4` |
-| `MAX_POLL_ATTEMPTS` | Max polling attempts before timeout | `60` |
 
 ---
 
@@ -222,7 +278,7 @@ curl http://localhost:8000/api/status/wanx-job-abc123
 **Backend:**
 ```bash
 cd backend
-python -m venv venv && source venv/bin/activate
+python -m venv venv && source venv/Scripts/activate
 pip install -r requirements.txt
 uvicorn main:app --reload --port 8000
 ```
@@ -231,66 +287,28 @@ uvicorn main:app --reload --port 8000
 ```bash
 cd frontend
 npm install
-npm run dev        # Vue: vite dev server on :5173
+npm run dev        # Vite dev server on :5173
 ```
 
 ---
 
 ## 📦 Deploying Infrastructure with OpenTofu
 
-All cloud resources — the SAS instance, OSS bucket, CORS rules, firewall ports, and lifecycle policies — are declared in `infra/` and provisioned with [OpenTofu](https://opentofu.org/).
-
-### Prerequisites
-
-- [OpenTofu ≥ 1.6](https://opentofu.org/docs/intro/install/) installed locally
-- Alibaba Cloud credentials with ECS / OSS / SAS permissions
-
-### 1. Configure variables
+All cloud resources are declared in `infra/` and provisioned with [OpenTofu](https://opentofu.org/).
 
 ```bash
 cd infra
 cp terraform.tfvars.example terraform.tfvars
-# Edit terraform.tfvars — fill in your access keys, bucket name, SSH key pair, etc.
-```
-
-### 2. Initialise providers
-
-```bash
+# fill in access keys, bucket name, SSH key pair
 tofu init
-```
-
-### 3. Preview the plan
-
-```bash
 tofu plan
-```
-
-### 4. Apply
-
-```bash
 tofu apply
 ```
 
-OpenTofu will provision:
-- **OSS bucket** (`modules/oss`) — private bucket with CORS, 7-day video expiry lifecycle
-- **SAS instance** (`modules/sas`) — Ubuntu 22.04, Docker pre-installed via cloud-init, app cloned and started automatically
-- **Firewall rules** — ports 22 (SSH), 80 (frontend), 8000 (API) opened
-
-On completion, outputs are printed:
-
-```
-app_url       = "http://<sas-public-ip>"
-api_url       = "http://<sas-public-ip>:8000"
-oss_bucket    = "nostalgia-engine-outputs-yourname"
-```
-
-### 5. Destroy (teardown)
-
-```bash
-tofu destroy
-```
-
-> **State management:** For team use, uncomment the `backend "oss"` block in `infra/main.tf` to store Terraform state remotely in OSS.
+OpenTofu provisions:
+- **OSS bucket** — private, CORS enabled, 7-day video expiry lifecycle
+- **SAS instance** — Ubuntu 22.04, Docker pre-installed, app auto-started via cloud-init
+- **Firewall rules** — ports 22, 80, 8000
 
 ---
 
@@ -302,11 +320,11 @@ MIT — see [`LICENSE`](LICENSE) for details.
 
 ## 🙌 Acknowledgements
 
-- [Alibaba Cloud Model Studio](https://www.alibabacloud.com/product/modelstudio) — Qwen3.5-Vision & Wan2.6-i2v-Flash
+- [Alibaba Cloud Model Studio](https://www.alibabacloud.com/product/modelstudio) — Qwen3.5 & Wan2.6-i2v-Flash
 - [Alibaba Cloud OSS](https://www.alibabacloud.com/product/oss)
 - [Alibaba Cloud SAS](https://www.alibabacloud.com/product/swas)
 - Built with [Qoder AI](https://qoder.ai) agentic coding tools
 
 ---
 
-*Alibaba Cloud AI × Creativity Hackathon 2026 — Such Nostalgia. Very 2016. Wow. 🐕*
+*Alibaba Cloud AI × Creativity Hackathon 2026 — Such Nostalgia. Very AI. Wow. 🐕*

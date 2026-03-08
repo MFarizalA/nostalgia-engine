@@ -125,7 +125,7 @@ onUnmounted(() => clearInterval(dotInterval))
             class="tag"
             :class="{ 'tag--done': currentStatus !== 'pending' }"
           >
-            Qwen Vision
+            Qwen3.5
           </span>
           <span class="tag__arrow">→</span>
           <span

@@ -32,8 +32,9 @@ async function poll() {
     if (data.status === 'success') {
       clearInterval(intervalId)
       emit('complete', {
-        videoUrl: data.video_url,
-        vibeScore: data.vibe_score,
+        videoUrl:    data.video_url,
+        vibeScore:   data.vibe_score,
+        stylePrompt: data.style_prompt,
       })
     } else if (data.status === 'failed') {
       clearInterval(intervalId)

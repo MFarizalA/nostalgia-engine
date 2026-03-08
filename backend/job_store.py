@@ -19,6 +19,7 @@ class JobRecord:
     vibe_score:        Optional[int]  = None
     scene_description: Optional[str] = None
     video_url:         Optional[str] = None
+    style_prompt:      Optional[str] = None
     error:             Optional[str] = None
     created_at:        float          = field(default_factory=time.time)
 

@@ -6,7 +6,7 @@ class Settings(BaseSettings):
     dashscope_api_key: str
 
     # Model names (configurable so they can be updated without code changes)
-    qwen_model: str = "qwen-vl-max"
+    qwen_model: str = "qwen3.5-35b-a3b"
     wan_model:  str = "wan2.6-i2v-flash"
 
     # OSS

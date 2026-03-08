@@ -1,11 +1,20 @@
 <script setup>
 import VideoResult from '../components/VideoResult.vue'
 
+const FESTIVITY_META = {
+  cny:     { icon: '🧧', label: 'Gong Xi Fa Cai' },
+  ramadan: { icon: '🌙', label: 'Ramadan Kareem' },
+  eid:     { icon: '🎊', label: 'Eid Mubarak' },
+}
+
 defineProps({
   videoUrl:         { type: String, required: true },
   vibeScore:        { type: Number, required: true },
   sceneDescription: { type: String, default: '' },
+  stylePrompt:      { type: String, default: '' },
   imageDataUrl:     { type: String, default: '' },
+  era:              { type: Number, default: 2016 },
+  festivity:        { type: String, default: null },
 })
 
 defineEmits(['restart'])
@@ -19,9 +28,13 @@ defineEmits(['restart'])
         <span>✨</span><span>🐕</span><span>📷</span>
         <span>✨</span><span>🌅</span><span>📸</span><span>✨</span>
       </div>
-      <h1 class="result-title">Wow. Such 2016. Many nostalgia.</h1>
+      <h1 class="result-title">Wow. Such {{ era }}. Many nostalgia.</h1>
+      <div v-if="festivity && FESTIVITY_META[festivity]" class="festivity-badge">
+        <span class="festivity-badge__icon">{{ FESTIVITY_META[festivity].icon }}</span>
+        <span class="festivity-badge__label">{{ FESTIVITY_META[festivity].label }}</span>
+      </div>
       <p class="result-sub">
-        Your photo has been rewound to peak 2016 energy.
+        Your photo has been rewound to peak {{ era }} energy.
       </p>
     </header>
 
@@ -39,7 +52,16 @@ defineEmits(['restart'])
         <blockquote class="scene-card__text">
           "{{ sceneDescription }}"
         </blockquote>
-        <p class="scene-card__credit">via Qwen3.5-Vision</p>
+        <p class="scene-card__credit">via Qwen3.5</p>
+      </div>
+
+      <!-- ── Wan style prompt ── -->
+      <div v-if="stylePrompt" class="scene-card">
+        <p class="scene-card__label">Wan's Direction — from Qwen</p>
+        <blockquote class="scene-card__text">
+          "{{ stylePrompt }}"
+        </blockquote>
+        <p class="scene-card__credit">used as video generation prompt</p>
       </div>
 
       <!-- ── Source photo comparison ── -->
@@ -85,7 +107,7 @@ defineEmits(['restart'])
 
     <!-- ── Footer ── -->
     <footer class="result-view__footer">
-      Powered by Qwen3.5-Vision &amp; Wan2.6-i2v-Flash · Alibaba Cloud
+      Doge Nostalgia Engine &nbsp;·&nbsp; Alibaba Cloud AI x Creativity Hackathon 2026 &nbsp;·&nbsp; Qwen3.5-35B + Wan2.6-i2v-Flash &nbsp;·&nbsp; SAS hosted
     </footer>
   </div>
 </template>
@@ -140,6 +162,29 @@ defineEmits(['restart'])
 .result-sub {
   font-size: 1rem;
   color: var(--text-mid);
+}
+
+/* ── Festivity badge ── */
+.festivity-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 18px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, rgba(212,165,90,0.2) 0%, rgba(192,120,48,0.15) 100%);
+  border: 1.5px solid rgba(212,165,90,0.45);
+  margin: 10px auto 8px;
+}
+
+.festivity-badge__icon {
+  font-size: 1.2rem;
+}
+
+.festivity-badge__label {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--amber-dark);
+  letter-spacing: 0.02em;
 }
 
 /* ── Main ── */
