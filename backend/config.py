@@ -17,7 +17,7 @@ class Settings(BaseSettings):
     oss_signed_url_expiry: int = 3600        # seconds
 
     model_config = SettingsConfigDict(
-        env_file=".env",
+        env_file=[".env", "../.env"],   # works from backend/ or project root
         env_file_encoding="utf-8",
         case_sensitive=False,
         extra="ignore",

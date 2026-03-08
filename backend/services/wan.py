@@ -57,6 +57,8 @@ async def submit_i2v_job(image_url: str, style_prompt: str) -> str:
 
     async with httpx.AsyncClient(timeout=30.0) as client:
         resp = await client.post(_VIDEO_SYNTHESIS_URL, headers=headers, json=payload)
+        if not resp.is_success:
+            logger.error("Wan submit failed %s: %s", resp.status_code, resp.text)
         resp.raise_for_status()
         data = resp.json()
 
