@@ -84,7 +84,7 @@ def _mime_to_ext(mime: str) -> str:
 async def generate(req: GenerateRequest) -> GenerateResponse:
     """
     1. Validate & decode image
-    2. Call Qwen3.5-Vision  → scene_description, style_prompt, vibe_score
+    2. Call Qwen3.5  → scene_description, style_prompt, vibe_score
     3. Upload source image to OSS  → signed URL for Wan
     4. Submit Wan2.6-i2v-Flash job  → wan_task_id
     5. Store job in memory, return 202 immediately
@@ -107,9 +107,15 @@ async def generate(req: GenerateRequest) -> GenerateResponse:
     ext    = _mime_to_ext(mime_type)
     logger.info("Job %s — image received: %s, %d bytes", job_id, mime_type, len(image_bytes))
 
-    # ── 2. Qwen3.5-Vision (~2–4 s) ──────────────────────────────────────────
+    # ── 2. Qwen3.5 (~2–4 s) ──────────────────────────────────────────────────
     try:
-        qwen_result = await qwen.analyze_photo(req.image_base64, mime_type)
+        qwen_result = await qwen.analyze_photo(
+            req.image_base64,
+            mime_type,
+            festivity=req.festivity,
+            era=req.era or 2016,
+            style=req.style,
+        )
     except Exception as exc:
         logger.exception("Job %s — Qwen error", job_id)
         raise HTTPException(502, detail=f"Such Qwen fail. Very error: {exc}")
@@ -144,6 +150,7 @@ async def generate(req: GenerateRequest) -> GenerateResponse:
         wan_task_id=wan_task_id,
         vibe_score=vibe_score,
         scene_description=scene_description,
+        style_prompt=style_prompt,
     ))
 
     return GenerateResponse(
@@ -245,5 +252,6 @@ def _to_response(record: JobRecord) -> StatusResponse:
         video_url=record.video_url,
         vibe_score=record.vibe_score,
         scene_description=record.scene_description,
+        style_prompt=record.style_prompt,
         error=record.error,
     )

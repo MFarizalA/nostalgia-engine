@@ -10,8 +10,12 @@ const jobState = ref({
   jobId: null,
   vibeScore: null,
   sceneDescription: null,
+  stylePrompt: null,
   videoUrl: null,
   imageDataUrl: null,
+  era: 2016,
+  festivity: null,
+  style: null,
 })
 
 function onJobSubmitted(data) {
@@ -33,8 +37,12 @@ function restart() {
     jobId: null,
     vibeScore: null,
     sceneDescription: null,
+    stylePrompt: null,
     videoUrl: null,
     imageDataUrl: null,
+    era: 2016,
+    festivity: null,
+    style: null,
   }
   view.value = 'landing'
 }
@@ -64,7 +72,10 @@ function restart() {
         :video-url="jobState.videoUrl"
         :vibe-score="jobState.vibeScore"
         :scene-description="jobState.sceneDescription"
+        :style-prompt="jobState.stylePrompt"
         :image-data-url="jobState.imageDataUrl"
+        :era="jobState.era"
+        :festivity="jobState.festivity"
         @restart="restart"
       />
     </Transition>
